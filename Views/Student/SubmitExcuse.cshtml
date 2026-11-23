@@ -1,0 +1,16 @@
+@{
+    ViewData["Title"] = "Excuse Letter";
+}
+
+<h2>Excuse Letter</h2>
+
+<form asp-action="SubmitExcuse" method="post">
+    <input type="hidden" name="classId" value="@ViewBag.ClassId" />
+    <input type="hidden" name="date" value="@ViewBag.Date" />
+    
+    <div class="mb-3">
+        <label class="form-label">Reason for absence (@ViewBag.Date)</label>
+        <textarea name="reason" class="form-control" rows="4"required></textarea>
+    </div>
+<button type="submit" class="btn btn-primary">Submit Excuse Letter</button>    
+</form>

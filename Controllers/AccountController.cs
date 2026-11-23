@@ -3,6 +3,8 @@ using AttendanceSystem.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
 
 namespace AttendanceSystem.Controllers;
 
@@ -47,4 +49,58 @@ public class AccountController : Controller {
         await _db.Users.InsertOneAsync(user);
         return RedirectToAction("Index", "Home"); 
     }
+
+    [HttpGet]
+    public IActionResult Login() => View();
+
+    [HttpPost] 
+    public async Task<IActionResult> Login(LoginViewModel model) {
+
+        if(!ModelState.IsValid) return View(model);
+
+        var email = model.Email.Trim().ToLower();
+        var user = await _db.Users.Find(u => u.Email == email).FirstOrDefaultAsync(); 
+
+        if(user == null || !user.IsActive || _hasher.VerifyHashedPassword(user, user.PasswordHash, model.Password) == PasswordVerificationResult.Failed) 
+        {
+            ModelState.AddModelError("", "Invalid Email or Password.");
+            return View(model);
+        } 
+
+        var claims = new List<Claim> {
+
+            new(ClaimTypes.NameIdentifier, user.Id!),
+            new(ClaimTypes.Name, user.FullName),
+            new(ClaimTypes.Role, user.Role)
+        };
+
+        var identity = new ClaimsIdentity(claims, "Cookies");
+        await HttpContext.SignInAsync("Cookies", new ClaimsPrincipal(identity));
+
+        
+        switch(user.Role) {
+
+            case "Teacher":
+                return RedirectToAction("Index", "Teacher");
+                  
+            case "Admin":
+                return RedirectToAction("Index", "Admin");
+                   
+            case "Student":
+                return RedirectToAction("Index", "Student");
+                     
+            default:
+                return RedirectToAction("Index", "Home");               
+        }
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Logout() {
+        
+        await HttpContext.SignOutAsync("Cookies");
+        return RedirectToAction("Login");
+    }
+
+    [HttpGet]
+    public IActionResult AccessDenied() => View();
 }

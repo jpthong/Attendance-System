@@ -15,4 +15,8 @@ public class MongoDbContext {
     }
 
     public IMongoCollection<User> Users => _db.GetCollection<User>("users");
+    public IMongoCollection<ClassRoom> Classes => _db.GetCollection<ClassRoom>("classes");
+    public IMongoCollection<AttendanceRecord> Attendance => _db.GetCollection<AttendanceRecord>("attendance");
+    public IMongoCollection<ExcuseLetter> ExcuseLetters => _db.GetCollection<ExcuseLetter>("excuseLetter");
+
 }

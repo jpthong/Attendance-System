@@ -1,0 +1,31 @@
+@model List<AttendanceSystem.Models.AttendanceRecord>
+@{
+    ViewData["Title"] = "Attendance";
+}
+@if(ViewBag.Absences >= 3) {
+<div class="alert alert-danger">
+    <strong>Warning!<strong> You have reached</strong> (@ViewBag.Absences) absences</strong>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"> </button> 
+</div>
+}
+<div class="text-center"> 
+    <h1 class="display-4">Your Attendance</h1>
+    <table class="table w-50 mx-auto">
+        <thead><tr class="fs-4"><th>Date</th><th>Status</th></tr></thead>
+        <tbody> 
+            @foreach(var r in Model) {
+                <tr> 
+                    <td>@r.Date</td>
+                    <td>@r.Status</td>  
+                    <td>
+                    @if (r.Status == "Absent") {
+                    <a asp-action="SubmitExcuse" asp-route-classId="@r.ClassId" asp-route-date="@r.Date">Submit Excuse</a>
+                    }
+                    </td>   
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+

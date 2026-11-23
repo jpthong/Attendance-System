@@ -1,0 +1,24 @@
+@model List<AttendanceSystem.Models.ExcuseLetter>
+
+@{
+    ViewData["Title"] = "Excuse Letters";
+}
+
+<table class="table w-50"> 
+    <thead><tr><th>Subject</th><th>Date</th><th>Reason</th><th></th></tr></thead>
+   @foreach(var l in Model) {
+    
+    <tr>
+        <td>@l.SubjectName</td>
+        <td>@l.Date</td>
+        <td>@l.Reason</td>
+        <td> 
+            <form asp-action="Review" method="post" class="d-inline"> 
+                <input type="hidden" name="id" value="@l.Id" />
+                <button name="decision" value="Approved" class="btn btn-success btn-sm">Approved</button>
+                <button name="decision" value="Rejected" class="btn btn-danger btn-sm">Rejected</button>
+            </form>
+        </td>
+    </tr> 
+    }
+</table>

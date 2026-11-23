@@ -9,6 +9,12 @@ builder.Services.AddControllersWithViews();
 builder.Services.Configure<MongoDbSettings> (
     builder.Configuration.GetSection("MongoDb"));
 builder.Services.AddSingleton<MongoDbContext>(); 
+
+builder.Services.AddAuthentication("Cookies").AddCookie("Cookies", o => {
+    o.LoginPath = "/Account/Login";
+    o.AccessDeniedPath = "/Account/AccessDenied";
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -21,7 +27,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseRouting();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();

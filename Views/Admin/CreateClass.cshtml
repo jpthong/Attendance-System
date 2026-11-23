@@ -1,0 +1,29 @@
+@model AttendanceSystem.Models.CreateClassViewModel
+@{
+    ViewData["Title"] = "Create Class";
+}
+
+<h2>Create Class</h2>
+
+<form asp-action="CreateClass" method="post" class="col-md-5">
+    <div class="mb-3">
+        <label asp-for="SubjectName" class="form-label"></label>
+        <input asp-for="SubjectName" class="form-control" />
+        <span asp-validation-for="SubjectName" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Section" class="form-label"></label>
+        <input asp-for="Section" class="form-control" />
+        <span asp-validation-for="Section" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="TeacherId" class="form-label">Teacher</label>
+        <select asp-for="TeacherId" class="form-select"
+            asp-items="@(new SelectList(ViewBag.Teachers, "Id", "FullName"))">
+            <option value="">Select a Teacher </option>
+            </select>
+            <span asp-validation-for="TeacherId" class="text-danger"> </span>   
+    </div>
+    
+    <button type="submit" class="btn btn-primary">Create</button>
+</form>

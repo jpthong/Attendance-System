@@ -1,0 +1,23 @@
+@{
+    ViewData["Title"] = "Report";
+    var records = (List<AttendanceSystem.Models.AttendanceRecord>)ViewBag.Records;
+    }
+
+<h2>Attendance Report - @ViewBag.ClassName</h2>
+
+    <table class="table w-75">
+        <thead>
+            <tr><th>Student</th><th>Present</th><th>Late</th><th>Absent</th><th>Excused</th></tr>
+        </thead>
+        <tbody>
+        @foreach(var s in ViewBag.Students) {
+            <tr>
+                <td>@s.FullName</td>
+                <td>@records.Count(r => r.StudentId == s.Id && r.Status == "Present")</td>
+                <td>@records.Count(r => r.StudentId == s.Id && r.Status == "Late")</td>
+                <td>@records.Count(r => r.StudentId == s.Id && r.Status == "Absent")</td>
+                <td>@records.Count(r => r.StudentId == s.Id && r.Status == "Excused")</td>
+            </tr>
+        }
+        </tbody>
+    </table>

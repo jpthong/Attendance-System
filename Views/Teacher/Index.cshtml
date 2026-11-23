@@ -1,0 +1,23 @@
+@model List<AttendanceSystem.Models.ClassRoom>
+@{
+    ViewData["Title"] = "Teacher Dashboard";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Teacher Dashboard</h1>
+    <table class="table w-50 mx-auto"> 
+        <thead> <tr class="fs-4"><th></th><th>Subject</th><th>Section</th><th></th></tr></thead>
+        <tbody>    
+            @foreach (var c in Model) {
+                <tr> 
+                    <td>@c.SubjectName</td>
+                    <td>@c.Section</td>     
+                    <td><a asp-action="TakeAttendance" asp-route-id="@c.Id">Take Attendance</a></td>  
+                    <td><a asp-action="Report" asp-route-id="@c.Id">Report</a></td>   
+                </tr>
+        }
+        </tbody>
+    </table>
+
+    <a asp-action="ExcuseLetters" class="btn btn-secondary">Excuse Letters</a>
+</div>
